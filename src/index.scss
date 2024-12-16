@@ -17,6 +17,8 @@
   --bg-color: #416645;
   --primary-color: #407847;
   --secondary-color: #fead38;
+
+  --error-color: #fe3838;
   --white: #ffffff;
   --black: #000000;
   --grey: #949494;
@@ -73,6 +75,10 @@ body {
 }
 
 .counter-value {
-  font-size: 6rem;
+  font-size: 5rem;
   color: var(--white);
+  &_max {
+    font-size: 6.5rem;
+    color: var(--error-color);
+  }
 }
