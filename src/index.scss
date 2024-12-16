@@ -44,7 +44,7 @@ body {
 .box {
   width: 100%;
   max-width: 450px;
-  min-height: 380px;
+  height: 380px;
   display: grid;
   grid-template-rows: 2fr 1fr;
   gap: 2rem;
@@ -70,4 +70,9 @@ body {
 
   &__bottom {
   }
+}
+
+.counter-value {
+  font-size: 6rem;
+  color: var(--white);
 }

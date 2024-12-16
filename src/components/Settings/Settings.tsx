@@ -1,17 +1,12 @@
 import { Button } from "../UI/Button/Button";
+import { Field } from "../UI/Field/Field";
 
 const Settings = () => {
   return (
     <div className="box">
       <div className="box__top">
-        <label htmlFor="maxValue">
-          max value:
-          <input id="maxValue" type="number" />
-        </label>
-        <label htmlFor="startValue">
-          start value:
-          <input id="startValue" type="number" />
-        </label>
+        <Field id="maxValue" label="max value" />
+        <Field id="startValue" label="start value" />
       </div>
       <div className="box__bottom">
         <Button title="set" />
