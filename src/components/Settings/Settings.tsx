@@ -1,38 +1,60 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Button } from "../UI/Button/Button";
 import { Field } from "../UI/Field/Field";
 
-type Props = {
-  maxValue: number;
-  startValue: number;
-  changeMaxValue: (value: number) => void;
-  changeStartValue: (value: number) => void;
-};
+const Settings: FC = () => {
+  const [maxValue, setMaxValue] = useState(5);
+  const [startValue, setStartValue] = useState(0);
+  const [isValidated, setIsValidated] = useState(true);
 
-const Settings: FC<Props> = ({
-  changeMaxValue,
-  changeStartValue,
-  maxValue,
-  startValue,
-}) => {
+  const changeMaxValue = (value: number) => {
+    setMaxValue(value);
+  };
+
+  const changeStartValue = (value: number) => {
+    setStartValue(value);
+  };
+
+  const validatorForMaxValue = () => {
+    if (maxValue <= startValue) {
+      setIsValidated(false);
+      return false;
+    } else {
+      setIsValidated(true);
+      return true;
+    }
+  };
+
+  const validatorForStartValue = () => {
+    if (maxValue <= startValue || startValue < 0) {
+      setIsValidated(false);
+      return false;
+    } else {
+      setIsValidated(true);
+      return true;
+    }
+  };
+
   return (
     <div className="box">
       <div className="box__top">
         <Field
           id="maxValue"
           label="max value"
-          cb={changeMaxValue}
+          changeValue={changeMaxValue}
           value={maxValue}
+          validator={validatorForMaxValue}
         />
         <Field
           id="startValue"
           label="start value"
-          cb={changeStartValue}
+          changeValue={changeStartValue}
           value={startValue}
+          validator={validatorForStartValue}
         />
       </div>
       <div className="box__bottom">
-        <Button title="set" />
+        <Button title="set" disabled={!isValidated} />
       </div>
     </div>
   );

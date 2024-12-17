@@ -1,40 +1,48 @@
 import { FC, useState } from "react";
 import { Button } from "../UI/Button/Button";
 
-type Props = {
-  maxValue: number;
-  startValue: number;
-};
+const Counter: FC = () => {
+  const [counterValue, setCounterValue] = useState(0);
 
-const Counter: FC<Props> = ({ maxValue, startValue }) => {
-  const [counterValue, setCounterValue] = useState(startValue);
+  const testMaxValue = 5;
+  const testIsSetSettings = true;
 
   const incrementCounterHandler = () => {
     setCounterValue((prevCounterValue) => prevCounterValue + 1);
   };
 
   const resetCounterHandler = () => {
-    setCounterValue(startValue);
+    setCounterValue(0);
   };
 
   return (
     <div className="box">
       <div className="box__top">
-        <span
-          className={
-            counterValue === maxValue ? "counter-value_max" : "counter-value"
-          }
-        >
-          {counterValue}
-        </span>
+        {testIsSetSettings ? (
+          <span
+            className={
+              testMaxValue === counterValue
+                ? "counter-value_max"
+                : "counter-value"
+            }
+          >
+            {counterValue}
+          </span>
+        ) : (
+          <span className="display">enter values and press 'set'</span>
+        )}
       </div>
       <div className="box__bottom">
         <Button
           title="inc"
-          disabled={counterValue === maxValue}
           onClick={incrementCounterHandler}
+          disabled={testMaxValue === counterValue || !testIsSetSettings}
         />
-        <Button title="reset" onClick={resetCounterHandler} />
+        <Button
+          title="reset"
+          onClick={resetCounterHandler}
+          disabled={!testIsSetSettings}
+        />
       </div>
     </div>
   );

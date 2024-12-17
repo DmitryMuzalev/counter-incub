@@ -3,14 +3,15 @@ import s from "./Field.module.scss";
 type Props = {
   id: string;
   label: string;
-  cb: (value: number) => void;
+  changeValue: (value: number) => void;
   value: number;
+  validator: () => boolean;
 };
 
-const Field: FC<Props> = ({ id, label, value, cb }) => {
+const Field: FC<Props> = ({ id, label, value, changeValue, validator }) => {
   const changeValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = +e.target.value;
-    cb(value);
+    changeValue(value);
   };
 
   return (
@@ -21,6 +22,7 @@ const Field: FC<Props> = ({ id, label, value, cb }) => {
         type="number"
         onChange={changeValueHandler}
         value={value}
+        className={s.error}
       />
     </div>
   );

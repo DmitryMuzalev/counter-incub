@@ -8,12 +8,18 @@
   border: none;
   border-radius: 10px;
   color: var(--bg-color);
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: var(--secondary-color-hover);
+  }
 
   &:active {
+    transform: scale(1.1);
   }
 
   &:disabled {
-    cursor: not-allowed;
+    pointer-events: none;
     opacity: 0.75;
   }
 }
