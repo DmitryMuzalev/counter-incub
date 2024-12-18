@@ -22,7 +22,7 @@ const Field: FC<Props> = ({ id, label, value, changeValue, validator }) => {
         type="number"
         onChange={changeValueHandler}
         value={value}
-        className={s.error}
+        className={validator() ? "" : s.error}
       />
     </div>
   );
