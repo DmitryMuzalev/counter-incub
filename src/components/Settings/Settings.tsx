@@ -1,39 +1,31 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Button } from "../UI/Button/Button";
 import { Field } from "../UI/Field/Field";
 
-const Settings: FC = () => {
-  const [maxValue, setMaxValue] = useState(5);
-  const [startValue, setStartValue] = useState(0);
-  const [isValidated, setIsValidated] = useState(true);
+type Props = {
+  maxValue: number;
+  changeMaxValue: (value: number) => void;
+  validatorForMaxValue: () => boolean;
+  startValue: number;
+  changeStartValue: (value: number) => void;
+  validatorForStartValue: () => boolean;
+  isValidated: boolean;
+  isChange: boolean;
+  setSettings: () => void;
+};
 
-  const changeMaxValue = (value: number) => {
-    setMaxValue(value);
-  };
-
-  const changeStartValue = (value: number) => {
-    setStartValue(value);
-  };
-
-  const validatorForMaxValue = () => {
-    if (maxValue <= startValue) {
-      setIsValidated(false);
-      return false;
-    } else {
-      setIsValidated(true);
-      return true;
-    }
-  };
-
-  const validatorForStartValue = () => {
-    if (maxValue <= startValue || startValue < 0) {
-      setIsValidated(false);
-      return false;
-    } else {
-      setIsValidated(true);
-      return true;
-    }
-  };
+const Settings: FC<Props> = (props) => {
+  const {
+    maxValue,
+    changeMaxValue,
+    validatorForMaxValue,
+    startValue,
+    changeStartValue,
+    validatorForStartValue,
+    isValidated,
+    isChange,
+    setSettings,
+  } = props;
 
   return (
     <div className="box">
@@ -54,7 +46,11 @@ const Settings: FC = () => {
         />
       </div>
       <div className="box__bottom">
-        <Button title="set" disabled={!isValidated} />
+        <Button
+          title="set"
+          onClick={() => setSettings()}
+          disabled={!isValidated || !isChange}
+        />
       </div>
     </div>
   );

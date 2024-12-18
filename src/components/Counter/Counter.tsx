@@ -1,47 +1,59 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button } from "../UI/Button/Button";
 
-const Counter: FC = () => {
-  const [counterValue, setCounterValue] = useState(0);
+type Props = {
+  maxValue: number;
+  startValue: number;
+  isChange: boolean;
+  isValidated: boolean;
+};
 
-  const testMaxValue = 5;
-  const testIsSetSettings = true;
+const Counter: FC<Props> = (props) => {
+  const { maxValue, startValue, isChange, isValidated } = props;
+
+  const [counterValue, setCounterValue] = useState(startValue);
+
+  useEffect(() => {
+    setCounterValue(startValue);
+  }, [startValue, maxValue]);
 
   const incrementCounterHandler = () => {
     setCounterValue((prevCounterValue) => prevCounterValue + 1);
   };
 
   const resetCounterHandler = () => {
-    setCounterValue(0);
+    setCounterValue(startValue);
   };
+
+  const message = isValidated
+    ? "enter values and press 'set'"
+    : "invalid value";
 
   return (
     <div className="box">
       <div className="box__top">
-        {testIsSetSettings ? (
+        {!isChange ? (
           <span
             className={
-              testMaxValue === counterValue
-                ? "counter-value_max"
-                : "counter-value"
+              maxValue === counterValue ? "counter-value_max" : "counter-value"
             }
           >
             {counterValue}
           </span>
         ) : (
-          <span className="display">enter values and press 'set'</span>
+          <span className={"display"}>{message}</span>
         )}
       </div>
       <div className="box__bottom">
         <Button
           title="inc"
           onClick={incrementCounterHandler}
-          disabled={testMaxValue === counterValue || !testIsSetSettings}
+          disabled={maxValue === counterValue || isChange}
         />
         <Button
           title="reset"
           onClick={resetCounterHandler}
-          disabled={!testIsSetSettings}
+          disabled={isChange}
         />
       </div>
     </div>
