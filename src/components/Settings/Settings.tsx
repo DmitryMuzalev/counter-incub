@@ -1,31 +1,32 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { Button } from "../UI/Button/Button";
 import { Field } from "../UI/Field/Field";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeMaxValueAC,
+  changeStartValueAC,
+  RootState,
+  setSettingsAC,
+} from "../../app/store";
 
-type Props = {
-  maxValue: number;
-  changeMaxValue: (value: number) => void;
-  validatorForMaxValue: () => boolean;
-  startValue: number;
-  changeStartValue: (value: number) => void;
-  validatorForStartValue: () => boolean;
-  isValidated: boolean;
-  isChange: boolean;
-  setSettings: () => void;
-};
+const Settings: FC = () => {
+  const dispatch = useDispatch();
+  const { maxValue, startValue, isChange, hasError } = useSelector<
+    RootState,
+    RootState
+  >((store) => store);
 
-const Settings: FC<Props> = (props) => {
-  const {
-    maxValue,
-    changeMaxValue,
-    validatorForMaxValue,
-    startValue,
-    changeStartValue,
-    validatorForStartValue,
-    isValidated,
-    isChange,
-    setSettings,
-  } = props;
+  const changeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = +e.target.value;
+    dispatch(changeMaxValueAC({ value }));
+  };
+
+  const changeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = +e.target.value;
+    dispatch(changeStartValueAC({ value }));
+  };
+
+  const setSettingsHandler = () => dispatch(setSettingsAC());
 
   return (
     <div className="box">
@@ -33,23 +34,29 @@ const Settings: FC<Props> = (props) => {
         <Field
           id="maxValue"
           label="max value"
-          changeValue={changeMaxValue}
+          type="number"
+          onChange={changeMaxValueHandler}
           value={maxValue}
-          validator={validatorForMaxValue}
+          className={
+            maxValue <= startValue || maxValue < 0 ? "field-error" : ""
+          }
         />
         <Field
           id="startValue"
           label="start value"
-          changeValue={changeStartValue}
+          type="number"
+          onChange={changeStartValueHandler}
           value={startValue}
-          validator={validatorForStartValue}
+          className={
+            maxValue <= startValue || startValue < 0 ? "field-error" : ""
+          }
         />
       </div>
       <div className="box__bottom">
         <Button
           title="set"
-          onClick={() => setSettings()}
-          disabled={!isValidated || !isChange}
+          onClick={() => setSettingsHandler()}
+          disabled={!isChange || hasError}
         />
       </div>
     </div>

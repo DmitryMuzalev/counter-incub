@@ -1,33 +1,29 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { Button } from "../UI/Button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  incrementCounterValueAC,
+  resetCounterValueAC,
+  RootState,
+} from "../../app/store";
 
-type Props = {
-  maxValue: number;
-  startValue: number;
-  isChange: boolean;
-  isValidated: boolean;
-};
+const Counter: FC = () => {
+  const { maxValue, counterValue, isChange, hasError } = useSelector<
+    RootState,
+    RootState
+  >((store) => store);
 
-const Counter: FC<Props> = (props) => {
-  const { maxValue, startValue, isChange, isValidated } = props;
+  const dispatch = useDispatch();
 
-  const [counterValue, setCounterValue] = useState(startValue);
+  const incrementCounterHandler = () => dispatch(incrementCounterValueAC());
 
-  useEffect(() => {
-    setCounterValue(startValue);
-  }, [startValue, maxValue]);
+  const resetCounterHandler = () => dispatch(resetCounterValueAC());
 
-  const incrementCounterHandler = () => {
-    setCounterValue((prevCounterValue) => prevCounterValue + 1);
-  };
-
-  const resetCounterHandler = () => {
-    setCounterValue(startValue);
-  };
-
-  const message = isValidated
-    ? "enter values and press 'set'"
-    : "invalid value";
+  const message = hasError ? (
+    <span className={"display_error"}>invalid value</span>
+  ) : (
+    <span className={"display"}>enter values and press 'set'</span>
+  );
 
   return (
     <div className="box">
@@ -41,7 +37,7 @@ const Counter: FC<Props> = (props) => {
             {counterValue}
           </span>
         ) : (
-          <span className={"display"}>{message}</span>
+          message
         )}
       </div>
       <div className="box__bottom">
