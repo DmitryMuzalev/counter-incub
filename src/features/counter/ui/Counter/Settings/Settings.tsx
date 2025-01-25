@@ -1,20 +1,21 @@
 import { ChangeEvent, FC } from "react";
-import { Button } from "../UI/Button/Button";
-import { Field } from "../UI/Field/Field";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useAppDispatch } from "common/hooks/useAppDispatch";
+import { useAppSelector } from "common/hooks/useAppSelector";
+
 import {
   changeMaxValueAC,
   changeStartValueAC,
-  RootState,
+  getSettings,
   setSettingsAC,
-} from "../../app/store";
+} from "features/counter/model/settings-reducer";
+import { Field } from "common/components/Field/Field";
+import { Button } from "common/components/Button/Button";
 
 const Settings: FC = () => {
-  const dispatch = useDispatch();
-  const { maxValue, startValue, isChange, hasError } = useSelector<
-    RootState,
-    RootState
-  >((store) => store);
+  const dispatch = useAppDispatch();
+  const { maxValue, startValue, isChange, hasError } =
+    useAppSelector(getSettings);
 
   const changeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = +e.target.value;
@@ -26,7 +27,8 @@ const Settings: FC = () => {
     dispatch(changeStartValueAC({ value }));
   };
 
-  const setSettingsHandler = () => dispatch(setSettingsAC());
+  const setSettingsHandler = () =>
+    dispatch(setSettingsAC({ value: startValue }));
 
   return (
     <div className="box">

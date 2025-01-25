@@ -1,12 +1,10 @@
-import { Counter } from "../components/Counter/Counter";
-import { Settings } from "../components/Settings/Settings";
+import { Counter } from "features/counter/ui/Counter/Counter";
 
 function AppWithRedux() {
   return (
-    <div className="app">
-      <Settings />
+    <>
       <Counter />
-    </div>
+    </>
   );
 }
 

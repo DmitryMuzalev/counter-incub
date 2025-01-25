@@ -1,23 +1,29 @@
 import { FC } from "react";
-import { Button } from "../UI/Button/Button";
-import { useDispatch, useSelector } from "react-redux";
+
+import { Button } from "common/components/Button/Button";
+
+import { useAppDispatch } from "common/hooks/useAppDispatch";
+import { useAppSelector } from "common/hooks/useAppSelector";
+
 import {
+  getCounterValue,
   incrementCounterValueAC,
   resetCounterValueAC,
-  RootState,
-} from "../../app/store";
+} from "features/counter/model/display-reducer";
 
-const Counter: FC = () => {
-  const { maxValue, counterValue, isChange, hasError } = useSelector<
-    RootState,
-    RootState
-  >((store) => store);
+import { getSettings } from "features/counter/model/settings-reducer";
 
-  const dispatch = useDispatch();
+const Display: FC = () => {
+  const { maxValue, startValue, isChange, hasError } =
+    useAppSelector(getSettings);
+  const counterValue = useAppSelector(getCounterValue);
+
+  const dispatch = useAppDispatch();
 
   const incrementCounterHandler = () => dispatch(incrementCounterValueAC());
 
-  const resetCounterHandler = () => dispatch(resetCounterValueAC());
+  const resetCounterHandler = () =>
+    dispatch(resetCounterValueAC({ value: startValue }));
 
   const message = hasError ? (
     <span className={"display_error"}>invalid value</span>
@@ -56,4 +62,4 @@ const Counter: FC = () => {
   );
 };
 
-export { Counter };
+export { Display };
