@@ -16,33 +16,34 @@ const initialSettingsState: SettingsState = {
   hasError: false,
 };
 
+//_Validation:
+const validateValues = (maxValue: number, startValue: number): boolean => {
+  return maxValue <= startValue || maxValue < 0 || startValue < 0;
+};
+
 //_Reducer:
 export const settingsReducer = (
   state: SettingsState = initialSettingsState,
   action: Actions
 ): SettingsState => {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case "CHANGE_MAX_VALUE": {
-      const isValidated =
-        action.payload.value <= state.startValue ||
-        action.payload.value < 0 ||
-        state.startValue < 0;
       return {
         ...state,
-        maxValue: action.payload.value,
+        maxValue: payload.value,
         isChange: true,
-        hasError: isValidated,
+        hasError: validateValues(payload.value, state.startValue),
       };
     }
 
     case "CHANGE_START_VALUE": {
-      const isValidated =
-        state.maxValue <= action.payload.value || action.payload.value < 0;
       return {
         ...state,
-        startValue: action.payload.value,
+        startValue: payload.value,
         isChange: true,
-        hasError: isValidated,
+        hasError: validateValues(state.maxValue, payload.value),
       };
     }
 
